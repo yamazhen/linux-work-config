@@ -3,8 +3,11 @@ vim.pack.add({ { src = "https://github.com/mfussenegger/nvim-jdtls" } })
 local jdtls = require("jdtls")
 local mason = vim.fn.expand("~/.local/share/nvim/mason/packages")
 local jdtls_path = mason .. "/jdtls"
-local root_dir = jdtls.setup.find_root({ ".git", "mvnw", "pom.xml", "build.gradle" }) or vim.fn.expand("%:p:h")
-local workspace = os.getenv("HOME") .. "/jdtls/workspace/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+local root_dir = jdtls.setup.find_root({ "mvnw", "pom.xml", "build.gradle" })
+if not root_dir then
+	root_dir = vim.fn.expand("%:p:h")
+end
+local workspace = root_dir .. "/.jdtls-workspace"
 
 jdtls.start_or_attach({
 	cmd = {
@@ -20,7 +23,7 @@ jdtls.start_or_attach({
 		"-jar",
 		vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar"),
 		"-configuration",
-		jdtls_path .. "/config_mac",
+		jdtls_path .. "/config_linux",
 		"-data",
 		workspace,
 	},

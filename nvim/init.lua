@@ -79,6 +79,7 @@ require("conform").setup({
 		html = { "prettierd" },
 		css = { "prettierd" },
 		python = { "black" },
+		json = { "jq" },
 	},
 	default_format_opts = {
 		lsp_format = "fallback",

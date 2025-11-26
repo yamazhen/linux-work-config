@@ -21,6 +21,7 @@ smart_borders on
 floating_modifier $mod
 focus_on_window_activation focus
 
+exec --no-startup-id xinput --set-prop 14 'libinput Accel Profile Enabled' 0, 1
 exec --no-startup-id xfsettingsd
 exec --no-startup-id pulseaudio --start
 exec --no-startup-id ~/.fehbg
