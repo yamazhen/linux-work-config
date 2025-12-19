@@ -3,7 +3,11 @@ dconf/
 gh/
 gtk-3.0/
 pavucontrol.ini
+QtProject.conf
+fish/
 pulse/
+flameshot/
+ngrok/
 user-dirs.dirs
 user-dirs.locale
 xfce4/
@@ -13,3 +17,4 @@ helm/
 git/
 configstore/
 Vial/
+uv/
