@@ -26,49 +26,26 @@ vim.pack.add({
 	{ src = "https://github.com/tpope/vim-fugitive" },
 	{ src = "https://github.com/ibhagwan/fzf-lua" },
 	{ src = "https://github.com/NMAC427/guess-indent.nvim" },
-	{ src = "https://github.com/stevearc/oil.nvim" },
 	{ src = "https://github.com/stevearc/conform.nvim" },
+	{ src = "https://github.com/stevearc/oil.nvim" },
 	{ src = "https://github.com/rafamadriz/friendly-snippets" },
-	{ src = "https://github.com/folke/trouble.nvim" },
 })
 
 require("guess-indent").setup()
 require("rose-pine").setup({ styles = { transparency = true, italic = false } })
-require("oil").setup({ view_options = { show_hidden = true } })
 require("fzf-lua").setup({ "ivy", winopts = { border = "none", preview = { hidden = true } } })
+require("oil").setup({ view_options = { show_hidden = true } })
 require("mason").setup()
-require("blink.cmp").setup()
 require("mason-lspconfig").setup()
-require("trouble").setup({
-	auto_preview = false,
-	focus = true,
-	keys = {
-		["<cr>"] = "jump_close",
-	},
-})
-require("conform").setup({
-	formatters_by_ft = {
-		lua = { "stylua" },
-		javascript = { "prettierd" },
-		javascriptreact = { "prettierd" },
-		typescriptreact = { "prettierd" },
-		typescript = { "prettierd" },
-		html = { "prettierd" },
-		css = { "prettierd" },
-		python = { "ruff" },
-		json = { "jq" },
-	},
-	default_format_opts = {
-		lsp_format = "fallback",
-	},
-})
+require("blink.cmp").setup()
+require("conform").setup(require("format"))
 
-local ts_highlight = function(e)
+local highlight = function(e)
 	local lang = vim.treesitter.language.get_lang(e.match) or e.match
 	pcall(vim.treesitter.start, e.buf, lang)
 	require("nvim-treesitter").install({ lang })
 end
-vim.api.nvim_create_autocmd("FileType", { pattern = { "*" }, callback = ts_highlight })
+vim.api.nvim_create_autocmd("FileType", { pattern = { "*" }, callback = highlight })
 
 vim.cmd("colorscheme rose-pine-moon")
 vim.opt.diffopt:append("vertical")
@@ -78,8 +55,8 @@ vim.keymap.set("n", "<leader>ee", "<cmd>Oil<CR>")
 vim.keymap.set("n", "<C-e>", "<cmd>FzfLua files formatter='path.filename_first'<CR>")
 vim.keymap.set("n", "<leader>ps", "<cmd>FzfLua grep_project formatter='path.filename_first'<CR>")
 vim.keymap.set("n", "<leader>si", "<cmd>FzfLua lsp_code_actions silent=true<CR>")
-vim.keymap.set("n", "<leader>tt", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>")
 vim.keymap.set("n", "<leader>sd", vim.lsp.buf.definition)
+vim.keymap.set("n", "<leader>tt", "<cmd>lua vim.diagnostic.setloclist({open=true, bufnr=0})<CR>")
 vim.keymap.set("n", "=", function()
 	vim.snippet.stop()
 	require("conform").format()
