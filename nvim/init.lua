@@ -38,7 +38,22 @@ require("oil").setup({ view_options = { show_hidden = true } })
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("blink.cmp").setup()
-require("conform").setup(require("format"))
+require("conform").setup({
+	formatters_by_ft = {
+		lua = { "stylua" },
+		javascript = { "prettierd" },
+		javascriptreact = { "prettierd" },
+		typescriptreact = { "prettierd" },
+		typescript = { "prettierd" },
+		html = { "prettierd" },
+		css = { "prettierd" },
+		python = { "ruff" },
+		json = { "jq" },
+	},
+	default_format_opts = {
+		lsp_format = "fallback",
+	},
+})
 
 local highlight = function(e)
 	local lang = vim.treesitter.language.get_lang(e.match) or e.match
