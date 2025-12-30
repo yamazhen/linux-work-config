@@ -29,6 +29,7 @@ vim.pack.add({
 	{ src = "https://github.com/stevearc/conform.nvim" },
 	{ src = "https://github.com/stevearc/oil.nvim" },
 	{ src = "https://github.com/rafamadriz/friendly-snippets" },
+	{ src = "https://github.com/github/copilot.vim" },
 })
 
 require("guess-indent").setup()
@@ -47,7 +48,6 @@ require("conform").setup({
 		typescript = { "prettierd" },
 		html = { "prettierd" },
 		css = { "prettierd" },
-		python = { "ruff" },
 		json = { "jq" },
 	},
 	default_format_opts = {
@@ -63,6 +63,7 @@ end
 vim.api.nvim_create_autocmd("FileType", { pattern = { "*" }, callback = highlight })
 
 vim.cmd("colorscheme rose-pine-moon")
+vim.g.copilot_no_tab_map = true
 vim.opt.diffopt:append("vertical")
 
 vim.keymap.set("n", "<leader>g", "<cmd>G<CR>")
@@ -72,6 +73,7 @@ vim.keymap.set("n", "<leader>ps", "<cmd>FzfLua grep_project formatter='path.file
 vim.keymap.set("n", "<leader>si", "<cmd>FzfLua lsp_code_actions silent=true<CR>")
 vim.keymap.set("n", "<leader>sd", vim.lsp.buf.definition)
 vim.keymap.set("n", "<leader>tt", "<cmd>lua vim.diagnostic.setloclist({open=true, bufnr=0})<CR>")
+vim.keymap.set("i", "<C-l>", "copilot#Accept('\\<CR>')", { expr = true, replace_keycodes = false })
 vim.keymap.set("n", "=", function()
 	vim.snippet.stop()
 	require("conform").format()
